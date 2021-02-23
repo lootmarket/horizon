@@ -172,6 +172,10 @@ button:hover {
     }
 }
 
+.info-icon {
+    fill: $control-action-icon-color;
+}
+
 .paginator {
     .btn {
         text-decoration: none;
@@ -267,4 +271,8 @@ button:hover {
     padding: 0.75rem;
     color: #fff;
     background: $danger;
+}
+
+.badge-sm {
+    font-size: 0.75rem;
 }

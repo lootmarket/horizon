@@ -70,7 +70,7 @@
 
                 var tagQuery = this.tagSearchPhrase ? 'tag=' + this.tagSearchPhrase + '&' : '';
 
-                this.$http.get('/' + Horizon.path + '/api/jobs/failed?' + tagQuery + 'starting_at=' + starting)
+                this.$http.get(Horizon.basePath + '/api/jobs/failed?' + tagQuery + 'starting_at=' + starting)
                     .then(response => {
                         if (!this.$root.autoLoadsNewEntries && refreshing && !response.data.jobs.length) {
                             return;
@@ -109,11 +109,13 @@
 
                 this.retryingJobs.push(id);
 
-                this.$http.post('/' + Horizon.path + '/api/jobs/retry/' + id)
+                this.$http.post(Horizon.basePath + '/api/jobs/retry/' + id)
                     .then((response) => {
                         setTimeout(() => {
                             this.retryingJobs = _.reject(this.retryingJobs, job => job == id);
                         }, 5000);
+                    }).catch(error => {
+                        this.retryingJobs = _.reject(this.retryingJobs, job => job == id);
                     });
             },
 
@@ -131,6 +133,22 @@
              */
             hasCompleted(job) {
                 return _.find(job.retried_by, retry => retry.status == 'completed');
+            },
+
+
+            /**
+             * Determine if the given job was retried.
+             */
+            wasRetried(job) {
+                return job.retried_by && job.retried_by.length;
+            },
+
+
+            /**
+             * Determine if the given job is a retry.
+             */
+            isRetry(job) {
+                return job.payload.retry_of;
             },
 
 
@@ -217,14 +235,30 @@
 
                 <tr v-for="job in jobs" :key="job.id">
                     <td>
-                        <span v-if="job.status != 'failed'" :title="job.name">{{jobBaseName(job.name)}}</span>
-                        <router-link v-if="job.status === 'failed'" :title="job.name" :to="{ name: 'failed-jobs-preview', params: { jobId: job.id }}">
+                        <router-link :title="job.name" :to="{ name: 'failed-jobs-preview', params: { jobId: job.id }}">
                             {{ jobBaseName(job.name) }}
                         </router-link>
+
+                        <small class="badge badge-secondary badge-sm"
+                               v-tooltip:top="`Total retries: ${job.retried_by.length}`"
+                               v-if="wasRetried(job)">
+                            Retried
+                        </small>
+
                         <br>
 
                         <small class="text-muted">
-                            Queue: {{job.queue}} | Tags: {{ job.payload.tags && job.payload.tags.length ? job.payload.tags.join(', ') : '' }}
+                            Queue: {{job.queue}}
+                            | Attempts: {{ job.payload.attempts }}
+                            <span v-if="isRetry(job)">
+                            | Retry of
+                            <router-link :title="job.name" :to="{ name: 'failed-jobs-preview', params: { jobId: job.payload.retry_of }}">
+                                {{ job.payload.retry_of.split('-')[0] }}
+                            </router-link>
+                            </span>
+                            <span v-if="job.payload.tags && job.payload.tags.length" class="text-break">
+                            | Tags: {{ job.payload.tags && job.payload.tags.length ? job.payload.tags.join(', ') : '' }}
+                            </span>
                         </small>
                     </td>
 

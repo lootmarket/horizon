@@ -36,7 +36,7 @@
             loadMetric() {
                 this.ready = false;
 
-                this.$http.get('/' + Horizon.path + '/api/metrics/' + this.$route.params.type + '/' + encodeURIComponent(this.$route.params.slug))
+                this.$http.get(Horizon.basePath + '/api/metrics/' + this.$route.params.type + '/' + encodeURIComponent(this.$route.params.slug))
                     .then(response => {
                         let data = this.prepareData(response.data);
 
@@ -57,7 +57,7 @@
             prepareData(data) {
                 return _.chain(data)
                     .map(value => {
-                        value.time = this.formatDate(value.time).format("hh:mmA");
+                        value.time = this.formatDate(value.time).format("MMM-D hh:mmA");
 
                         return value;
                     })
@@ -86,10 +86,11 @@
                             label: label,
                             data: _.map(data, attribute),
                             lineTension: 0,
-                            backgroundColor: 'rgba(235, 243, 249, 0.4)',
-                            pointBackgroundColor: '#3981B4',
-                            borderColor: '#3981B4',
-                            borderWidth: 4,
+                            backgroundColor: 'transparent',
+                            pointBackgroundColor: '#fff',
+                            pointBorderColor: '#7746ec',
+                            borderColor: '#7746ec',
+                            borderWidth: 2,
                         },
                     ],
                 };

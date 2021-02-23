@@ -26,11 +26,18 @@ Route::prefix('api')->group(function () {
     Route::get('/metrics/queues', 'QueueMetricsController@index')->name('horizon.queues-metrics.index');
     Route::get('/metrics/queues/{horizon_id}', 'QueueMetricsController@show')->name('horizon.queues-metrics.show');
 
+    // Batches Routes...
+    Route::get('/batches', 'BatchesController@index')->name('horizon.jobs-batches.index');
+    Route::get('/batches/{id}', 'BatchesController@show')->name('horizon.jobs-batches.show');
+    Route::post('/batches/retry/{id}', 'BatchesController@retry')->name('horizon.jobs-batches.retry');
+
     // Job Routes...
-    Route::get('/jobs/recent', 'RecentJobsController@index')->name('horizon.recent-jobs.index');
+    Route::get('/jobs/pending', 'PendingJobsController@index')->name('horizon.pending-jobs.index');
+    Route::get('/jobs/completed', 'CompletedJobsController@index')->name('horizon.completed-jobs.index');
     Route::get('/jobs/failed', 'FailedJobsController@index')->name('horizon.failed-jobs.index');
     Route::get('/jobs/failed/{horizon_id}', 'FailedJobsController@show')->name('horizon.failed-jobs.show');
     Route::post('/jobs/retry/{horizon_id}', 'RetryController@store')->name('horizon.retry-jobs.show');
+    Route::get('/jobs/{horizon_id}', 'JobsController@show')->name('horizon.jobs.show');
 });
 
 // Catch-all Route...
