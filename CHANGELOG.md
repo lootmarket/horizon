@@ -1,6 +1,151 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/horizon/compare/v5.15.0...5.x)
+## [Unreleased](https://github.com/laravel/horizon/compare/v5.27.1...5.x)
+
+## [v5.27.1](https://github.com/laravel/horizon/compare/v5.27.0...v5.27.1) - 2024-08-05
+
+* Fix error when loading monitoried tags page(#1478) by [@therobfonz](https://github.com/therobfonz) in https://github.com/laravel/horizon/pull/1485
+
+## [v5.27.0](https://github.com/laravel/horizon/compare/v5.26.0...v5.27.0) - 2024-07-26
+
+* Extend Slack Notification to work with Slack Apps for Laravel 11 support by [@travisricks](https://github.com/travisricks) in https://github.com/laravel/horizon/pull/1481
+
+## [v5.26.0](https://github.com/laravel/horizon/compare/v5.25.0...v5.26.0) - 2024-07-22
+
+* [5.x] Adding scaling to balance = false by [@dbpolito](https://github.com/dbpolito) in https://github.com/laravel/horizon/pull/1473
+
+## [v5.25.0](https://github.com/laravel/horizon/compare/v5.24.6...v5.25.0) - 2024-07-05
+
+* Different exit codes for paused and inactive horizon status by [@CanvasCompanyHylke](https://github.com/CanvasCompanyHylke) in https://github.com/laravel/horizon/pull/1471
+
+## [v5.24.6](https://github.com/laravel/horizon/compare/v5.24.5...v5.24.6) - 2024-06-25
+
+* Remove leftover publishing command in install command after simplified assets. by [@joveice](https://github.com/joveice) in https://github.com/laravel/horizon/pull/1468
+
+## [v5.24.5](https://github.com/laravel/horizon/compare/v5.24.4...v5.24.5) - 2024-05-31
+
+* Fixes tests when using Process 7.1 by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/horizon/pull/1456
+* Update runningProcesses to also include terminating processes by [@nckrtl](https://github.com/nckrtl) in https://github.com/laravel/horizon/pull/1454
+
+## [v5.24.4](https://github.com/laravel/horizon/compare/v5.24.3...v5.24.4) - 2024-05-03
+
+* [5.x] Fix #1419 by [@tmayrand](https://github.com/tmayrand) in https://github.com/laravel/horizon/pull/1424
+* Prevent infinite loop when forgetting failed jobs by [@JackWH](https://github.com/JackWH) in https://github.com/laravel/horizon/pull/1429
+* [5.x] Fix setting custom ASSET_URLs and support cache busting without integrity check by [@mmachatschek](https://github.com/mmachatschek) in https://github.com/laravel/horizon/pull/1427
+* Simplify asset story by [@timacdonald](https://github.com/timacdonald) in https://github.com/laravel/horizon/pull/1438
+
+## [v5.24.3](https://github.com/laravel/horizon/compare/v5.24.2...v5.24.3) - 2024-04-22
+
+* [5.x] Readd vite support by [@mmachatschek](https://github.com/mmachatschek) in https://github.com/laravel/horizon/pull/1421
+
+## [v5.24.2](https://github.com/laravel/horizon/compare/v5.24.1...v5.24.2) - 2024-04-17
+
+* Revert "[5.x] feature: this adds the vite integrity plugin to support assetsAreCurrent check" by [@driesvints](https://github.com/driesvints) in https://github.com/laravel/horizon/pull/1417
+* Revert "[5.x] Change Laravel Mix asset bundling to Vite setup" by [@driesvints](https://github.com/driesvints) in https://github.com/laravel/horizon/pull/1418
+
+## [v5.24.1](https://github.com/laravel/horizon/compare/v5.24.0...v5.24.1) - 2024-04-15
+
+* [5.x] Change Laravel Mix asset bundling to Vite setup by [@mmachatschek](https://github.com/mmachatschek) in https://github.com/laravel/horizon/pull/1413
+* [5.x] feature: this adds the vite integrity plugin to support assetsAreCurrent check by [@mmachatschek](https://github.com/mmachatschek) in https://github.com/laravel/horizon/pull/1415
+
+## [v5.24.0](https://github.com/laravel/horizon/compare/v5.23.2...v5.24.0) - 2024-04-09
+
+* Enhance forget command by [@jaroslavstefanec](https://github.com/jaroslavstefanec) in https://github.com/laravel/horizon/pull/1409
+* [5.x] Update to bootstrap 5.1 and drop jQuery by [@mmachatschek](https://github.com/mmachatschek) in https://github.com/laravel/horizon/pull/1405
+* Fix passing null by [@driesvints](https://github.com/driesvints) in https://github.com/laravel/horizon/pull/1412
+
+## [v5.23.2](https://github.com/laravel/horizon/compare/v5.23.1...v5.23.2) - 2024-03-23
+
+* [5.x] Make commands lazy by [@timacdonald](https://github.com/timacdonald) in https://github.com/laravel/horizon/pull/1399
+
+## [v5.23.1](https://github.com/laravel/horizon/compare/v5.23.0...v5.23.1) - 2024-02-20
+
+* Output console error when terminating due to memory usage by [@SanderMuller](https://github.com/SanderMuller) in https://github.com/laravel/horizon/pull/1391
+
+## [v5.23.0](https://github.com/laravel/horizon/compare/v5.22.1...v5.23.0) - 2024-02-12
+
+* [5.x] Improves console output and fixes Carbon v3 support by [@nunomaduro](https://github.com/nunomaduro) in https://github.com/laravel/horizon/pull/1387
+
+## [v5.22.1](https://github.com/laravel/horizon/compare/v5.22.0...v5.22.1) - 2024-01-30
+
+* Make the expiration time for temporarily failed jobs configurable by [@alirezadp10](https://github.com/alirezadp10) in https://github.com/laravel/horizon/pull/1375
+* Carbon v3 support by [@driesvints](https://github.com/driesvints) in https://github.com/laravel/horizon/pull/1380
+
+## [v5.22.0](https://github.com/laravel/horizon/compare/v5.21.5...v5.22.0) - 2024-01-16
+
+* Add cache check before registering routes by [@serpentblade](https://github.com/serpentblade) in https://github.com/laravel/horizon/pull/1367
+* Fix the pagination of recent jobs list by [@kirba](https://github.com/kirba) in https://github.com/laravel/horizon/pull/1366
+* [5.x] Laravel v11 support by [@nunomaduro](https://github.com/nunomaduro) in https://github.com/laravel/horizon/pull/1369
+* Add exit code to horizon:forget command by [@bytestream](https://github.com/bytestream) in https://github.com/laravel/horizon/pull/1370
+
+## [v5.21.5](https://github.com/laravel/horizon/compare/v5.21.4...v5.21.5) - 2023-12-29
+
+* [5.x] Pass event instance to event listeners tag() method by [@mateusjatenee](https://github.com/mateusjatenee) in https://github.com/laravel/horizon/pull/1361
+
+## [v5.21.4](https://github.com/laravel/horizon/compare/v5.21.3...v5.21.4) - 2023-11-23
+
+* Bump axios from 1.3.2 to 1.6.0 by [@dependabot](https://github.com/dependabot) in https://github.com/laravel/horizon/pull/1347
+* fix: undefined array key 'queue' by [@TomaszOnePilot](https://github.com/TomaszOnePilot) in https://github.com/laravel/horizon/pull/1351
+
+## [v5.21.3](https://github.com/laravel/horizon/compare/v5.21.2...v5.21.3) - 2023-10-27
+
+- Ensure out of memory events are raised before exiting the process by [@jameshulse](https://github.com/jameshulse) in https://github.com/laravel/horizon/pull/1341
+
+## [v5.21.2](https://github.com/laravel/horizon/compare/v5.21.1...v5.21.2) - 2023-10-17
+
+- Fix the job repository class based on service bindings by [@daison12006013](https://github.com/daison12006013) in https://github.com/laravel/horizon/pull/1335
+
+## [v5.21.1](https://github.com/laravel/horizon/compare/v5.21.0...v5.21.1) - 2023-09-19
+
+- Fixing Bug in Clear Metrics by [@joaopalopes24](https://github.com/joaopalopes24) in https://github.com/laravel/horizon/pull/1319
+
+## [v5.21.0](https://github.com/laravel/horizon/compare/v5.20.1...v5.21.0) - 2023-09-18
+
+- Add `horizon:reset-metrics` command by [@trevorgehman](https://github.com/trevorgehman) in https://github.com/laravel/horizon/pull/1318
+
+## [v5.20.1](https://github.com/laravel/horizon/compare/v5.20.0...v5.20.1) - 2023-09-12
+
+- Use available `batch.processedJobs` value from `Illuminate\Bus\Batch` by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/horizon/pull/1315
+
+## [v5.20.0](https://github.com/laravel/horizon/compare/v5.19.2...v5.20.0) - 2023-08-30
+
+- Throws `Laravel\Horizon\Exceptions\ForbiddenException` on unauthorized access by [@joelbutcher](https://github.com/joelbutcher) in https://github.com/laravel/horizon/pull/1308
+
+## [v5.19.2](https://github.com/laravel/horizon/compare/v5.19.1...v5.19.2) - 2023-08-29
+
+- Set 0 as the default runtime of the job by [@AsemAlalami](https://github.com/AsemAlalami) in https://github.com/laravel/horizon/pull/1307
+
+## [v5.19.1](https://github.com/laravel/horizon/compare/v5.19.0...v5.19.1) - 2023-08-09
+
+- Handle non-array parameters for "queue" setting in supervisor config by [@PrinsFrank](https://github.com/PrinsFrank) in https://github.com/laravel/horizon/pull/1299
+
+## [v5.19.0](https://github.com/laravel/horizon/compare/v5.18.0...v5.19.0) - 2023-07-14
+
+- Make sure that missing supervisors are correctly displayed when using multiple environments by [@PrinsFrank](https://github.com/PrinsFrank) in https://github.com/laravel/horizon/pull/1294
+
+## [v5.18.0](https://github.com/laravel/horizon/compare/v5.17.0...v5.18.0) - 2023-06-30
+
+- Fix supervisor reprovisioning by [@PrinsFrank](https://github.com/PrinsFrank) in https://github.com/laravel/horizon/pull/1288
+- Display inactive supervisors in dashboard by [@PrinsFrank](https://github.com/PrinsFrank) in https://github.com/laravel/horizon/pull/1286
+- Fix autoscaler scaling down below zero when (nr. of queues * minProcesses) is higher than maxProcesses by [@PrinsFrank](https://github.com/PrinsFrank) in https://github.com/laravel/horizon/pull/1292
+
+## [v5.17.0](https://github.com/laravel/horizon/compare/v5.16.1...v5.17.0) - 2023-06-13
+
+- Add events for when supervisors are terminated by @PrinsFrank in https://github.com/laravel/horizon/pull/1282
+- Fixed occasional flashing when toggling scheme by @ramonrietdijk in https://github.com/laravel/horizon/pull/1283
+
+## [v5.16.1](https://github.com/laravel/horizon/compare/v5.16.0...v5.16.1) - 2023-05-29
+
+- Mark as deprecated using `night()` and `$useDarkTheme` by @lloricode in https://github.com/laravel/horizon/pull/1279
+
+## [v5.16.0](https://github.com/laravel/horizon/compare/v5.15.1...v5.16.0) - 2023-05-18
+
+- Refreshes tags periodically by @nunomaduro in https://github.com/laravel/horizon/pull/1274
+- Respect the prefers-color-scheme setting by @ramonrietdijk in https://github.com/laravel/horizon/pull/1275
+
+## [v5.15.1](https://github.com/laravel/horizon/compare/v5.15.0...v5.15.1) - 2023-04-26
+
+- Fix deprecation errors for PHP 8.2 by @AntonCooper in https://github.com/laravel/horizon/pull/1270
 
 ## [v5.15.0](https://github.com/laravel/horizon/compare/v515.0...v5.15.0) - 2023-03-07
 
