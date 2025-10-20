@@ -81,12 +81,12 @@ class RedisJobRepository implements JobRepository
     public function __construct(RedisFactory $redis)
     {
         $this->redis = $redis;
-        $this->recentJobExpires = config('horizon.trim.recent', 60);
-        $this->pendingJobExpires = config('horizon.trim.pending', 60);
-        $this->completedJobExpires = config('horizon.trim.completed', 60);
-        $this->failedJobExpires = config('horizon.trim.failed', 10080);
-        $this->recentFailedJobExpires = config('horizon.trim.recent_failed', $this->failedJobExpires);
-        $this->monitoredJobExpires = config('horizon.trim.monitored', 10080);
+        $this->recentJobExpires = (int) config('horizon.trim.recent', 60);
+        $this->pendingJobExpires = (int) config('horizon.trim.pending', 60);
+        $this->completedJobExpires = (int) config('horizon.trim.completed', 60);
+        $this->failedJobExpires = (int) config('horizon.trim.failed', 10080);
+        $this->recentFailedJobExpires = (int) config('horizon.trim.recent_failed', $this->failedJobExpires);
+        $this->monitoredJobExpires = (int) config('horizon.trim.monitored', 10080);
     }
 
     /**
@@ -273,20 +273,14 @@ class RedisJobRepository implements JobRepository
      */
     protected function minutesForType($type)
     {
-        switch ($type) {
-            case 'failed_jobs':
-                return $this->failedJobExpires;
-            case 'recent_failed_jobs':
-                return $this->recentFailedJobExpires;
-            case 'pending_jobs':
-                return $this->pendingJobExpires;
-            case 'completed_jobs':
-                return $this->completedJobExpires;
-            case 'silenced_jobs':
-                return $this->completedJobExpires;
-            default:
-                return $this->recentJobExpires;
-        }
+        return match ($type) {
+            'failed_jobs' => $this->failedJobExpires,
+            'recent_failed_jobs' => $this->recentFailedJobExpires,
+            'pending_jobs' => $this->pendingJobExpires,
+            'completed_jobs' => $this->completedJobExpires,
+            'silenced_jobs' => $this->completedJobExpires,
+            default => $this->recentJobExpires,
+        };
     }
 
     /**
@@ -518,11 +512,13 @@ class RedisJobRepository implements JobRepository
      */
     protected function updateRetryStatus(JobPayload $payload, $retries, $failed)
     {
-        return collect($retries)->map(function ($retry) use ($payload, $failed) {
-            return $retry['id'] === $payload->id()
+        return collect($retries)
+            ->map(function ($retry) use ($payload, $failed) {
+                return $retry['id'] === $payload->id()
                     ? Arr::set($retry, 'status', $failed ? 'failed' : 'completed')
                     : $retry;
-        })->all();
+            })
+            ->all();
     }
 
     /**

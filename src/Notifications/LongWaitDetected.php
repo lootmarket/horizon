@@ -10,9 +10,10 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Slack\BlockKit\Blocks\SectionBlock;
 use Illuminate\Notifications\Slack\SlackMessage as ChannelIdSlackMessage;
 use Illuminate\Support\Str;
+use Laravel\Horizon\Contracts\LongWaitDetectedNotification;
 use Laravel\Horizon\Horizon;
 
-class LongWaitDetected extends Notification
+class LongWaitDetected extends Notification implements LongWaitDetectedNotification
 {
     use Queueable;
 
@@ -77,7 +78,7 @@ class LongWaitDetected extends Notification
     {
         return (new MailMessage)
             ->error()
-            ->subject(config('app.name').': Long Queue Wait Detected')
+            ->subject(config('horizon.name').': Long Queue Wait Detected')
             ->greeting('Oh no! Something needs your attention.')
             ->line(sprintf(
                 'The "%s" queue on the "%s" connection has a wait time of %s seconds.',
@@ -100,7 +101,7 @@ class LongWaitDetected extends Notification
 
         $content = sprintf(
             '[%s] The "%s" queue on the "%s" connection has a wait time of %s seconds.',
-            config('app.name'),
+            config('horizon.name'),
             $this->longWaitQueue,
             $this->longWaitConnection,
             $this->seconds
@@ -141,7 +142,7 @@ class LongWaitDetected extends Notification
     {
         return (new NexmoMessage)->content(sprintf( // @phpstan-ignore-line
             '[%s] The "%s" queue on the "%s" connection has a wait time of %s seconds.',
-            config('app.name'), $this->longWaitQueue, $this->longWaitConnection, $this->seconds
+            config('horizon.name'), $this->longWaitQueue, $this->longWaitConnection, $this->seconds
         ));
     }
 

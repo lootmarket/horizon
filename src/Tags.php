@@ -47,8 +47,8 @@ class Tags
     public static function extractExplicitTags($job)
     {
         return $job instanceof CallQueuedListener
-                    ? static::tagsForListener($job)
-                    : static::explicitTags(static::targetsFor($job));
+            ? static::tagsForListener($job)
+            : static::explicitTags(static::targetsFor($job));
     }
 
     /**
@@ -63,13 +63,14 @@ class Tags
 
         static::setEvent($event);
 
-        return collect(
-            [static::extractListener($job), $event]
-        )->map(function ($job) {
-            return static::for($job);
-        })->collapse()->unique()->tap(function () {
-            static::flushEventState();
-        })->toArray();
+        return collect([static::extractListener($job), $event])
+            ->map(fn ($job) => static::for($job))
+            ->collapse()
+            ->unique()
+            ->tap(function () {
+                static::flushEventState();
+            })
+            ->toArray();
     }
 
     /**
@@ -80,9 +81,11 @@ class Tags
      */
     protected static function explicitTags(array $jobs)
     {
-        return collect($jobs)->map(function ($job) {
-            return method_exists($job, 'tags') ? $job->tags(static::$event) : [];
-        })->collapse()->unique()->all();
+        return collect($jobs)
+            ->map(fn ($job) => method_exists($job, 'tags') ? $job->tags(static::$event) : [])
+            ->collapse()
+            ->unique()
+            ->all();
     }
 
     /**
@@ -93,18 +96,13 @@ class Tags
      */
     public static function targetsFor($job)
     {
-        switch (true) {
-            case $job instanceof BroadcastEvent:
-                return [$job->event];
-            case $job instanceof CallQueuedListener:
-                return [static::extractEvent($job)];
-            case $job instanceof SendQueuedMailable:
-                return [$job->mailable];
-            case $job instanceof SendQueuedNotifications:
-                return [$job->notification];
-            default:
-                return [$job];
-        }
+        return match (true) {
+            $job instanceof BroadcastEvent => [$job->event],
+            $job instanceof CallQueuedListener => [static::extractEvent($job)],
+            $job instanceof SendQueuedMailable => [$job->mailable],
+            $job instanceof SendQueuedNotifications => [$job->notification],
+            default => [$job],
+        };
     }
 
     /**
@@ -118,19 +116,21 @@ class Tags
         $models = [];
 
         foreach ($targets as $target) {
-            $models[] = collect(
-                (new ReflectionClass($target))->getProperties()
-            )->map(function ($property) use ($target) {
-                $property->setAccessible(true);
+            $models[] = collect((new ReflectionClass($target))->getProperties())
+                ->map(function ($property) use ($target) {
+                    $property->setAccessible(true);
 
-                $value = static::getValue($property, $target);
+                    $value = static::getValue($property, $target);
 
-                if ($value instanceof Model) {
-                    return [$value];
-                } elseif ($value instanceof EloquentCollection) {
-                    return $value->all();
-                }
-            })->collapse()->filter()->all();
+                    if ($value instanceof Model) {
+                        return [$value];
+                    } elseif ($value instanceof EloquentCollection) {
+                        return $value->all();
+                    }
+                })
+                ->collapse()
+                ->filter()
+                ->all();
         }
 
         return collect($models)->collapse()->unique();
@@ -172,8 +172,8 @@ class Tags
     protected static function extractEvent($job)
     {
         return isset($job->data[0]) && is_object($job->data[0])
-                        ? $job->data[0]
-                        : new stdClass;
+            ? $job->data[0]
+            : new stdClass;
     }
 
     /**

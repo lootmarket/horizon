@@ -20,11 +20,24 @@ class HorizonServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->normalizeConfig();
         $this->registerEvents();
         $this->registerRoutes();
         $this->registerResources();
         $this->offerPublishing();
         $this->registerCommands();
+    }
+
+    /**
+     * Normalize the Horizon configuration.
+     *
+     * @return void
+     */
+    protected function normalizeConfig()
+    {
+        if (! $this->app['config']->get('horizon.name')) {
+            $this->app['config']->set('horizon.name', $this->app['config']->get('app.name'));
+        }
     }
 
     /**
@@ -113,16 +126,19 @@ class HorizonServiceProvider extends ServiceProvider
                 Console\PauseSupervisorCommand::class,
                 Console\PublishCommand::class,
                 Console\PurgeCommand::class,
-                Console\StatusCommand::class,
                 Console\SupervisorCommand::class,
-                Console\SupervisorsCommand::class,
+                Console\SupervisorStatusCommand::class,
                 Console\TerminateCommand::class,
                 Console\TimeoutCommand::class,
                 Console\WorkCommand::class,
             ]);
         }
 
-        $this->commands([Console\SnapshotCommand::class]);
+        $this->commands([
+            Console\SnapshotCommand::class,
+            Console\StatusCommand::class,
+            Console\SupervisorsCommand::class,
+        ]);
     }
 
     /**
@@ -168,8 +184,8 @@ class HorizonServiceProvider extends ServiceProvider
     {
         foreach ($this->serviceBindings as $key => $value) {
             is_numeric($key)
-                    ? $this->app->singleton($value)
-                    : $this->app->singleton($key, $value);
+                ? $this->app->singleton($value)
+                : $this->app->singleton($key, $value);
         }
     }
 

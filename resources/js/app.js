@@ -1,12 +1,13 @@
 import axios from 'axios';
-import Vue from 'vue/dist/vue.esm.js';
-import VueRouter from 'vue-router';
+import { createApp } from 'vue/dist/vue.esm-bundler.js';
+import { createRouter, createWebHistory } from 'vue-router';
 import VueJsonPretty from 'vue-json-pretty';
 import 'vue-json-pretty/lib/styles.css';
 import Base from './base';
 import Routes from './routes';
 import Alert from './components/Alert.vue';
 import SchemeToggler from './components/SchemeToggler.vue';
+import Poll from './components/Poll.vue';
 
 let token = document.head.querySelector("meta[name='csrf-token']");
 
@@ -16,33 +17,7 @@ if (token) {
     axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
 }
 
-Vue.use(VueRouter);
-
-Vue.prototype.$http = axios.create();
-
-window.Horizon.basePath = '/' + window.Horizon.path;
-
-let routerBasePath = window.Horizon.basePath + '/';
-
-if (window.Horizon.path === '' || window.Horizon.path === '/') {
-    routerBasePath = '/';
-    window.Horizon.basePath = '';
-}
-
-const router = new VueRouter({
-    routes: Routes,
-    mode: 'history',
-    base: routerBasePath,
-});
-
-Vue.component('vue-json-pretty', VueJsonPretty);
-Vue.component('alert', Alert);
-Vue.component('scheme-toggler', SchemeToggler);
-
-Vue.mixin(Base);
-
-new Vue({
-    router,
+const app = createApp({
     data() {
         return {
             alert: {
@@ -52,8 +27,35 @@ new Vue({
                 confirmationProceed: null,
                 confirmationCancel: null,
             },
-
             autoLoadsNewEntries: localStorage.autoLoadsNewEntries === '1',
         };
     },
-}).$mount('#horizon');
+});
+
+app.config.globalProperties.$http = axios.create();
+
+let proxyPath = window.Horizon.proxy_path;
+window.Horizon.basePath = proxyPath + '/' + window.Horizon.path;
+
+let routerBasePath = window.Horizon.basePath + '/';
+
+if (window.Horizon.path === '' || window.Horizon.path === '/') {
+    routerBasePath = proxyPath + '/';
+    window.Horizon.basePath = proxyPath;
+}
+
+const router = createRouter({
+    history: createWebHistory(routerBasePath),
+    routes: Routes,
+});
+
+app.use(router);
+
+app.component('vue-json-pretty', VueJsonPretty);
+app.component('alert', Alert);
+app.component('scheme-toggler', SchemeToggler);
+app.component('poll', Poll);
+
+app.mixin(Base);
+
+app.mount('#horizon');

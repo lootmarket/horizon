@@ -66,10 +66,10 @@ class MasterSupervisor implements Pausable, Restartable, Terminable
     /**
      * Create a new master supervisor instance.
      *
-     * @param  string  $environment
+     * @param  string|null  $environment
      * @return void
      */
-    public function __construct(string $environment = null)
+    public function __construct(?string $environment = null)
     {
         $this->environment = $environment;
 
@@ -107,8 +107,8 @@ class MasterSupervisor implements Pausable, Restartable, Terminable
     public static function basename()
     {
         return static::$nameResolver
-                        ? call_user_func(static::$nameResolver)
-                        : Str::slug(gethostname());
+            ? call_user_func(static::$nameResolver)
+            : Str::slug(gethostname());
     }
 
     /**

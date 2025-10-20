@@ -18,22 +18,12 @@
             };
         },
 
+
         /**
          * Prepare the component.
          */
         mounted() {
             document.title = "Horizon - Failed Jobs";
-
-            this.loadJobs();
-
-            this.refreshJobsPeriodically();
-        },
-
-        /**
-         * Clean after the component is destroyed.
-         */
-        destroyed() {
-            clearInterval(this.interval);
         },
 
 
@@ -47,9 +37,9 @@
                 this.loadJobs();
             },
 
+
             tagSearchPhrase() {
                 clearTimeout(this.searchTimeout);
-                clearInterval(this.interval);
 
                 this.searchTimeout = setTimeout(() => {
                     this.loadJobs();
@@ -73,6 +63,7 @@
                 this.$http.get(Horizon.basePath + '/api/jobs/failed?' + tagQuery + 'starting_at=' + starting)
                     .then(response => {
                         if (!this.$root.autoLoadsNewEntries && refreshing && !response.data.jobs.length) {
+                            this.ready = true;
                             return;
                         }
 
@@ -150,6 +141,7 @@
                 return job.payload.retry_of;
             },
 
+
             /**
              * Construct the tooltip label for a retried job.
              */
@@ -159,13 +151,12 @@
                 return `Total retries: ${job.retried_by.length}, Last retry status: ${this.upperFirst(lastRetry.status)}`;
             },
 
+
             /**
-             * Refresh the jobs every period of time.
+             * Poll handler to refresh the jobs at regular intervals.
              */
             refreshJobsPeriodically() {
-                this.interval = setInterval(() => {
-                    this.loadJobs((this.page - 1) * this.perPage, true);
-                }, 3000);
+                this.loadJobs((this.page - 1) * this.perPage, true);
             },
 
 
@@ -201,6 +192,8 @@
 
 <template>
     <div>
+        <poll @poll="refreshJobsPeriodically" />
+
         <div class="card overflow-hidden">
             <div class="card-header d-flex align-items-center justify-content-between">
                 <h2 class="h6 m-0">Failed Jobs</h2>
